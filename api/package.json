@@ -1,0 +1,17 @@
+{
+  "name": "sig",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@google/clasp": "^2.0.1",
+    "@types/google-apps-script": "0.0.37",
+    "@types/node": "^11.9.3",
+    "tslint": "^5.12.1"
+  },
+  "devDependencies": {
+    "prettier": "^1.16.4",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.0.1"
+  }
+}
