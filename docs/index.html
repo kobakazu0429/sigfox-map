@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leaflet</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+    integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+    crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+    integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+    crossorigin=""></script>
+</head>
+<body>
+  <div id="mapid" style="width: 1000px; height: 700px;"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+  <script>
+    var mymap = L.map('mapid').setView([34.222, 132.601], 15);
+
+    L.tileLayer(
+      'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+          '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+          'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        id: 'mapbox.streets'
+      }).addTo(mymap);
+
+    axios
+      .get("https://script.google.com/macros/s/AKfycbw3B7_TlAyXa1oWX3DZ8k8u3rcIGxGrqo-3k1puIJtFV0RCASw/exec")
+      .then(result => {
+          result.data.forEach(point => {
+            const date = new Date(point.updated_at * 1000);
+            const content = `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+
+            L.marker([point.lon, point.lat])
+            .addTo(mymap)
+            .bindPopup(content);
+          });
+
+          const path = result.data.map(point => [point.lon, point.lat]);
+          L.polyline(path, {
+            "color": "#F00",
+            "weight": 10,
+            "opacity": 0.8
+          }).addTo(mymap);
+      });
+  </script>
+</body>
+</html>
