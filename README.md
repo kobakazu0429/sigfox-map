@@ -1,1 +1,1 @@
-# sigfox-map
+# sigfox-test
